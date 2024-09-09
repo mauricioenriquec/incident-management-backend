@@ -73,6 +73,13 @@ export const updateIncidentStatus = async (req, res) => {
 
 export const deleteIncident = async (req, res) => {
   const { id } = req.params;
+  const userRole = req.userRole;
+
+  // Solo admins pueden eliminar incidentes
+  if (userRole !== 'admin') {
+    return res.status(403).json({ message: 'Forbidden: Admins only' });
+  }
+
   try {
     const [result] = await Incident.delete(id);
     if (result.affectedRows === 0) {
