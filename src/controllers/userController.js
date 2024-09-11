@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import db from '../config/db.js'; // conexión a MySQL
+import db from '../config/db.js';
 import { handleError } from '../utils/handleError.js';
 
-// Registrar un nuevo usuario
 export const register = async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
@@ -18,7 +17,6 @@ export const register = async (req, res) => {
   }
 };
 
-// Iniciar sesión
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -30,13 +28,12 @@ export const login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: 'Credenciales inválidas' });
 
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    res.json({ token, user });
   } catch (error) {
     handleError(res, error);
   }
 };
 
-// Obtener información del usuario autenticado
 export const getProfile = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT id, name, email, role FROM users WHERE id = ?', [req.userId]);
@@ -47,7 +44,6 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// Actualizar datos del usuario
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { name, email, password } = req.body;

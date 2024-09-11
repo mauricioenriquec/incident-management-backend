@@ -1,25 +1,23 @@
-import db from '../config/db.js';
-
 const User = {
-  create: (data, callback) => {
+  create: async (data) => {
     const query = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)';
-    db.query(query, [data.name, data.email, data.password, data.role], callback);
+    await db.query(query, [data.name, data.email, data.password, data.role]);
   },
-  findByEmail: (email, callback) => {
-    const query = 'SELECT * FROM users WHERE email = ?';
-    db.query(query, [email], (err, results) => {
-      if (err) return callback(err, null);
-      if (results.length === 0) return callback(null, null);
-      callback(null, results[0]);
+  
+  updateById: async (id, data) => {
+    const fields = [];
+    const values = [];
+    
+    Object.keys(data).forEach(key => {
+      fields.push(`${key} = ?`);
+      values.push(data[key]);
     });
-  },
-  findById: (id, callback) => {
-    const query = 'SELECT * FROM users WHERE id = ?';
-    db.query(query, [id], (err, results) => {
-      if (err) return callback(err, null);
-      if (results.length === 0) return callback(null, null);
-      callback(null, results[0]);
-    });
+    
+    const query = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
+    values.push(id);
+    const [result] = await db.query(query, values);
+    
+    return result.affectedRows > 0;
   },
 };
 

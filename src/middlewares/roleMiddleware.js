@@ -1,6 +1,6 @@
 const roleMiddleware = (roles) => {
   return (req, res, next) => {
-    const userRole = req.userRole; // Verificamos que `req.userRole` exista
+    const userRole = req.user?.role; 
 
     if (!userRole) {
       return res.status(401).json({ message: 'User role not found' });
@@ -10,7 +10,7 @@ const roleMiddleware = (roles) => {
       return res.status(403).json({ message: 'Access denied: Insufficient role' });
     }
 
-    next(); // Pasamos al siguiente middleware o controlador
+    next();
   };
 };
 
