@@ -1,34 +1,34 @@
 ##CREDENCIALES DE AUTENTICACION
 
+Rol: admin
 Marvin Lopez
 marvinlopez@example.com
 marvin1234
-admin
-	
+
+Rol: resident	
 Mauricio Cardozo
 mauriciocardozo@example.com
 mauricio1234
-resident
 	
+Rol: admin    
 Harold Carazas
 haroldcarazas@example.com
 harold1234
-admin
-	
+
+Rol: admin	
 Jorge Sosa
 jorgesosa@example.com
 jorge1234
-admin
-	
+
+Rol: resident	
 Hans Llanos
 hansllanos@example.com
 hans1234
-resident
-	
+
+Rol: resident	
 Diego Huarsaya
 diegohuarsaya@example.com
 diego1234
-resident
 
 El servidor estará disponible en http://localhost:5000.
 
@@ -54,4 +54,4 @@ DELETE /api/incidents/:id: Eliminar un incidente por ID (requiere autenticación
 Autenticación
 Este proyecto utiliza JWT para la autenticación. Asegúrate de incluir el token en el encabezado Authorization de tus solicitudes:
 
-Authorization: Bearer <tu_token>
+Authorization: Bearer <token>
