@@ -2,8 +2,8 @@ import db from '../config/db.js';
 
 const Incident = {
   create: async (data) => {
-    const query = 'INSERT INTO incidents (title, description, images, status, user_id, created_at) VALUES (?, ?, ?, ?, ?, ?)';
-    await db.query(query, [data.title, data.description, JSON.stringify(data.images), data.status, data.user_id, data.created_at]);
+    const query = 'INSERT INTO incidents (title, description, images, status, user_id, created_at, location) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    await db.query(query, [data.title, data.description, JSON.stringify(data.images), data.status, data.user_id, data.created_at, data.location]);
   },
   getAll: async () => {
     const query = 'SELECT * FROM incidents';

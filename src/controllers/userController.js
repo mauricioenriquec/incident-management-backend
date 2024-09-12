@@ -36,8 +36,10 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT id, name, email, role FROM users WHERE id = ?', [req.userId]);
+    // Usar req.user.id en lugar de req.userId
+    const [rows] = await db.query('SELECT id, name, email, role FROM users WHERE id = ?', [req.user.id]);
     const user = rows[0];
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
     res.json(user);
   } catch (error) {
     handleError(res, error);
@@ -54,10 +56,10 @@ export const updateUser = async (req, res) => {
     const [result] = await db.query(query, [name, email, hashedPassword, id]);
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    res.json({ message: 'User updated successfully' });
+    res.json({ message: 'Usuario actualizado exitosamente' });
   } catch (err) {
     res.status(500).json({ error: err });
   }

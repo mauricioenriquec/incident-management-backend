@@ -10,14 +10,14 @@ const authMiddleware = (req, res, next) => {
     return res.status(401).json({ message: 'No token provided or invalid token format' });
   }
 
-  const token = authHeader.split(' ')[1]; 
+  const token = authHeader.split(' ')[1];
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({ message: 'Failed to authenticate token' });
     }
 
-    req.user = { id: decoded.id, role: decoded.role }; 
+    req.user = { id: decoded.id, role: decoded.role };
     next();
   });
 };

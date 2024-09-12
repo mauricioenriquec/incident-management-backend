@@ -1,6 +1,6 @@
 const roleMiddleware = (roles) => {
   return (req, res, next) => {
-    const userRole = req.user?.role; 
+    const userRole = req.user?.role;
 
     if (!userRole) {
       return res.status(401).json({ message: 'User role not found' });
