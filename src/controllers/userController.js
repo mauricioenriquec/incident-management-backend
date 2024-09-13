@@ -36,7 +36,6 @@ export const login = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    // Usar req.user.id en lugar de req.userId
     const [rows] = await db.query('SELECT id, name, email, role FROM users WHERE id = ?', [req.user.id]);
     const user = rows[0];
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -60,6 +59,31 @@ export const updateUser = async (req, res) => {
     }
 
     res.json({ message: 'Usuario actualizado exitosamente' });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const [users] = await db.query('SELECT id, name, email, role FROM users');
+    res.json(users);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [result] = await db.query('DELETE FROM users WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json({ message: 'Usuario eliminado exitosamente' });
   } catch (err) {
     res.status(500).json({ error: err });
   }
